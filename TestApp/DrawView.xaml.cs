@@ -84,17 +84,20 @@ namespace TestApp
             }
             XSpan = MaxX - MinX;
             YSpan = MaxY - MinY;
-            LineThickness = Min(XSpan, YSpan) / 200;
-
 
             canvas.Width = XSpan;
             canvas.Height = YSpan;
+
+
             TransformGroup transformGroup = new TransformGroup();
             TranslateTransform translateTransform = new TranslateTransform(-MinX, -MinY);
             transformGroup.Children.Add(translateTransform);
             ScaleTransform scaleTransform = new ScaleTransform(1, -1, 0, YSpan / 2);
             transformGroup.Children.Add(scaleTransform);
             canvas.RenderTransform = transformGroup;
+
+            double  zoomFact = VBox.ActualWidth / canvas.Width;
+            LineThickness = 1/zoomFact;
 
             foreach (LineCoord line in LineCoords)
             {
@@ -109,6 +112,12 @@ namespace TestApp
                 };
                 canvas.Children.Add(newLine);
             }
+        }
+
+
+        private void VBox_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
         }
     }
 }
